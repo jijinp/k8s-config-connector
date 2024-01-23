@@ -34,6 +34,7 @@ import (
 var preferredSampleForResource = map[string]string{
 	"alloydbcluster":                    "regular-cluster",
 	"alloydbinstance":                   "primary-instance",
+	"alloydbuser":                       "database-user",
 	"bigqueryjob":                       "query-bigquery-job",
 	"bigtableappprofile":                "multicluster-bigtable-app-profile",
 	"bigtableinstance":                  "replicated-instance",
@@ -75,6 +76,7 @@ var preferredSampleForResource = map[string]string{
 	"dlpinspecttemplate":                "custom-inspect-template",
 	"dlpjobtrigger":                     "big-query-job-trigger",
 	"dnsrecordset":                      "dns-a-record-set",
+	"edgecontainercluster":              "edgecontainercluster-remote-control-plane",
 	"folder":                            "folder-in-folder",
 	"gkehubfeature":                     "multi-cluster-ingress-feature",
 	"gkehubfeaturemembership":           "config-management-feature-membership",

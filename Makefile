@@ -199,9 +199,14 @@ run: generate fmt vet
 # Ensures dependencies are up-to-date
 .PHONY: ensure
 ensure:
-	make -C third_party all
 	go mod tidy -compat=1.19
 
 # Should run all needed commands before any PR is sent out.
 .PHONY: ready-pr
 ready-pr: manifests resource-docs generate-go-client
+
+# Upgrades dcl dependencies
+.PHONY: upgrade-dcl
+upgrade-dcl:
+	go get github.com/GoogleCloudPlatform/declarative-resource-client-library
+	make ensure

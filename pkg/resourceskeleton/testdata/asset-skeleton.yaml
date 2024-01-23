@@ -25,6 +25,8 @@
 # not supported by asset inventory
 - resourceConfigId: AlloyDBInstance
 # not supported by asset inventory
+- resourceConfigId: AlloyDBUser
+# not supported by asset inventory
 - resourceConfigId: ArtifactRegistryRepository
 - asset:
     ancestors:
@@ -422,6 +424,8 @@
     spec:
       location: us-central1-a
   resourceConfigId: ComputeNetworkEndpointGroup:zonal
+# not supported by asset inventory
+- resourceConfigId: ComputeNetworkFirewallPolicy
 # not supported by asset inventory
 - resourceConfigId: ComputeNetworkPeering
 # not supported by asset inventory

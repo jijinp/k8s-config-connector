@@ -221,6 +221,14 @@ type JobSecret struct {
 	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
 }
 
+type JobSecretKeyRef struct {
+	/* The name of the secret in Cloud Secret Manager. Format: {secretName} if the secret is in the same project. projects/{project}/secrets/{secretName} if the secret is in a different project. */
+	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+
+	/* The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version. */
+	VersionRef v1alpha1.ResourceRef `json:"versionRef"`
+}
+
 type JobStartupProbe struct {
 	/* Minimum consecutive failures for the probe to be considered failed after having succeeded. Defaults to 3. Minimum value is 1. */
 	// +optional
@@ -292,7 +300,7 @@ type JobTemplate struct {
 type JobValueSource struct {
 	/* Selects a secret and a specific version from Cloud Secret Manager. */
 	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *JobSecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type JobVolumeMounts struct {
@@ -317,6 +325,10 @@ type JobVolumes struct {
 }
 
 type JobVpcAccess struct {
+	/* VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector}, where {project} can be project id or number. */
+	// +optional
+	ConnectorRef *v1alpha1.ResourceRef `json:"connectorRef,omitempty"`
+
 	/* Traffic VPC egress settings. Possible values: ["ALL_TRAFFIC", "PRIVATE_RANGES_ONLY"]. */
 	// +optional
 	Egress *string `json:"egress,omitempty"`

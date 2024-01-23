@@ -132,6 +132,7 @@ import (
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storage/v1beta1"
 	storagetransferv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1alpha1"
 	storagetransferv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/storagetransfer/v1beta1"
+	tagsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1alpha1"
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
@@ -252,6 +253,7 @@ type Interface interface {
 	StorageV1beta1() storagev1beta1.StorageV1beta1Interface
 	StoragetransferV1alpha1() storagetransferv1alpha1.StoragetransferV1alpha1Interface
 	StoragetransferV1beta1() storagetransferv1beta1.StoragetransferV1beta1Interface
+	TagsV1alpha1() tagsv1alpha1.TagsV1alpha1Interface
 	TagsV1beta1() tagsv1beta1.TagsV1beta1Interface
 	TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface
 	VertexaiV1alpha1() vertexaiv1alpha1.VertexaiV1alpha1Interface
@@ -260,8 +262,7 @@ type Interface interface {
 	WorkstationsV1alpha1() workstationsv1alpha1.WorkstationsV1alpha1Interface
 }
 
-// Clientset contains the clients for groups. Each group has exactly one
-// version included in a Clientset.
+// Clientset contains the clients for groups.
 type Clientset struct {
 	*discovery.DiscoveryClient
 	accesscontextmanagerV1beta1  *accesscontextmanagerv1beta1.AccesscontextmanagerV1beta1Client
@@ -371,6 +372,7 @@ type Clientset struct {
 	storageV1beta1               *storagev1beta1.StorageV1beta1Client
 	storagetransferV1alpha1      *storagetransferv1alpha1.StoragetransferV1alpha1Client
 	storagetransferV1beta1       *storagetransferv1beta1.StoragetransferV1beta1Client
+	tagsV1alpha1                 *tagsv1alpha1.TagsV1alpha1Client
 	tagsV1beta1                  *tagsv1beta1.TagsV1beta1Client
 	tpuV1alpha1                  *tpuv1alpha1.TpuV1alpha1Client
 	vertexaiV1alpha1             *vertexaiv1alpha1.VertexaiV1alpha1Client
@@ -914,6 +916,11 @@ func (c *Clientset) StoragetransferV1beta1() storagetransferv1beta1.Storagetrans
 	return c.storagetransferV1beta1
 }
 
+// TagsV1alpha1 retrieves the TagsV1alpha1Client
+func (c *Clientset) TagsV1alpha1() tagsv1alpha1.TagsV1alpha1Interface {
+	return c.tagsV1alpha1
+}
+
 // TagsV1beta1 retrieves the TagsV1beta1Client
 func (c *Clientset) TagsV1beta1() tagsv1beta1.TagsV1beta1Interface {
 	return c.tagsV1beta1
@@ -1416,6 +1423,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.tagsV1alpha1, err = tagsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.tagsV1beta1, err = tagsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -1568,6 +1579,7 @@ func New(c rest.Interface) *Clientset {
 	cs.storageV1beta1 = storagev1beta1.New(c)
 	cs.storagetransferV1alpha1 = storagetransferv1alpha1.New(c)
 	cs.storagetransferV1beta1 = storagetransferv1beta1.New(c)
+	cs.tagsV1alpha1 = tagsv1alpha1.New(c)
 	cs.tagsV1beta1 = tagsv1beta1.New(c)
 	cs.tpuV1alpha1 = tpuv1alpha1.New(c)
 	cs.vertexaiV1alpha1 = vertexaiv1alpha1.New(c)

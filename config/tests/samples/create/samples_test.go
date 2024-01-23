@@ -220,16 +220,17 @@ var testDisabledList = map[string]bool{
 	"restored-from-backup-cluster": true,
 	// This sample test need physical rack which is not suitable for e2e testing due to
 	// limited budget.
-	"edgecontainercluster":       true,
-	"edgecontainernodepool":      true,
-	"edgecontainervpnconnection": true,
+	"edgecontainercluster-local-control-plane":  true,
+	"edgecontainercluster-remote-control-plane": true,
+	"edgecontainernodepool":                     true,
+	"edgecontainervpnconnection":                true,
 }
 
 func TestAll(t *testing.T) {
 	project := testgcp.GetDefaultProject(t)
 
 	setup()
-	samples := loadSamplesOntoUnstructs(t, regexp.MustCompile(runTestsRegex), project)
+	samples := LoadMatchingSamples(t, regexp.MustCompile(runTestsRegex), project)
 	// Sort the samples in descending order by number of resources. This is an attempt to start the samples that use
 	// a network and have many dependencies sooner since they will likely be the longest running.
 	sortSamplesInDescendingOrderByNumberOfResources(samples)

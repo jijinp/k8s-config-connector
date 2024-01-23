@@ -37,6 +37,12 @@ var TestNameRegexesToSkip = []string{
 	".*(calendarbudget).*",
 	// Edge Network tests require a mocked GCP API.
 	".*(edgenetwork).*",
+	// Edge container node pool tests require a mocked GCP API.
+	".*(edgecontainernodepool).*",
+	// Edge container vpn connection tests require a mocked GCP API.
+	".*(edgecontainervpnconnection).*",
+	// Disable due to b/315013168, covered by mocked GCP test.
+	".*(containerattachedcluster).*",
 }
 
 // TestNameRegexToSkipForTestCRUD is similar to
@@ -57,4 +63,10 @@ var TestNameRegexToSkipForTestCRUD = []string{
 	".*orgrole.*",
 	// Edge Network tests require a mocked GCP API.
 	".*(edgenetwork).*",
+	// Edge container node pool tests require a mocked GCP API.
+	".*(edgecontainernodepool).*",
+	// Edge container vpn connection tests require a mocked GCP API.
+	".*(edgecontainervpnconnection).*",
+	// Disable due to b/315013168, covered by mocked GCP test.
+	".*(containerattachedcluster).*",
 }

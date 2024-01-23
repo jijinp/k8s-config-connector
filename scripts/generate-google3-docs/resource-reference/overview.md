@@ -13,6 +13,11 @@ version. If you are using a different version, you can find each version's
 Custom Resource Definitions in the GitHub repository. For example, this
 [link contains CRDs for version 1.89.0](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/v1.89.0/crds).
 
+Note: Please review <a href="/config-connector/docs/best-practices">best
+practices</a> and
+<a href="/config-connector/docs/troubleshooting">troubleshooting</a> common
+issues for {{product_name_short}}.
+
 <div>
 <devsite-filter>
   <input type="text" placeholder="Type a keyword to filter the list of resources">
@@ -33,7 +38,7 @@ Custom Resource Definitions in the GitHub repository. For example, this
   <td><a href="/config-connector/docs/reference/resource-docs/accesscontextmanager/accesscontextmanageraccesspolicy.md">AccessContextManagerAccessPolicy</a></td>
 </tr>
 <tr>
-  <td><a href="/container-attached/docs/">{{anthos_attached_clusters_name}}</a></td>
+  <td><a href="/anthos/clusters/docs/multi-cloud/attached">{{anthos_attached_clusters_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/containerattached/containerattachedcluster.md">ContainerAttachedCluster</a></td>
 </tr>
 <tr>
@@ -51,6 +56,10 @@ Custom Resource Definitions in the GitHub repository. For example, this
 <tr>
   <td><a href="/alloydb/docs/">{{alloydb_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/alloydb/alloydbinstance.md">AlloyDBInstance</a></td>
+</tr>
+<tr>
+  <td><a href="/alloydb/docs/">{{alloydb_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/alloydb/alloydbuser.md">AlloyDBUser</a></td>
 </tr>
 <tr>
   <td><a href="/artifact-registry/docs/">{{ar_name}}</a></td>
@@ -224,6 +233,10 @@ Custom Resource Definitions in the GitHub repository. For example, this
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/compute/computenetworkendpointgroup.md">ComputeNetworkEndpointGroup</a></td>
+</tr>
+<tr>
+  <td><a href="/compute/docs/">{{compute_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/compute/computenetworkfirewallpolicy.md">ComputeNetworkFirewallPolicy</a></td>
 </tr>
 <tr>
   <td><a href="/compute/docs/">{{compute_name}}</a></td>
@@ -414,11 +427,23 @@ Custom Resource Definitions in the GitHub repository. For example, this
   <td><a href="/config-connector/docs/reference/resource-docs/dns/dnsrecordset.md">DNSRecordSet</a></td>
 </tr>
 <tr>
-  <td><a href="/edgenetwork/docs/">{{edgenetwork_name}}</a></td>
+  <td><a href="/distributed-cloud/edge/latest/docs/">{{distributed_cloud_edge_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/edgecontainer/edgecontainercluster.md">EdgeContainerCluster</a></td>
+</tr>
+<tr>
+  <td><a href="/distributed-cloud/edge/latest/docs/">{{distributed_cloud_edge_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/edgecontainer/edgecontainernodepool.md">EdgeContainerNodePool</a></td>
+</tr>
+<tr>
+  <td><a href="/distributed-cloud/edge/latest/docs/">{{distributed_cloud_edge_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/edgecontainer/edgecontainervpnconnection.md">EdgeContainerVPNConnection</a></td>
+</tr>
+<tr>
+  <td><a href="/distributed-cloud/edge/latest/docs/">{{distributed_cloud_edge_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/edgenetwork/edgenetworknetwork.md">EdgeNetworkNetwork</a></td>
 </tr>
 <tr>
-  <td><a href="/edgenetwork/docs/">{{edgenetwork_name}}</a></td>
+  <td><a href="/distributed-cloud/edge/latest/docs/">{{distributed_cloud_edge_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/edgenetwork/edgenetworksubnet.md">EdgeNetworkSubnet</a></td>
 </tr>
 <tr>
@@ -797,24 +822,13 @@ Custom Resource Definitions in the GitHub repository. For example, this
   <td><a href="/vpc/docs/">{{serverless_vpc_access_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/vpcaccess/vpcaccessconnector.md">VPCAccessConnector</a></td>
 </tr>
-<tr>
-  <td><a href="/distributed-cloud/edge/latest/docs">{{edgecontainer_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/edgecontainer/edgecontainercluster.md">EdgeContainerCluster</a></td>
-</tr>
-<tr>
-  <td><a href="/distributed-cloud/edge/latest/docs">{{edgecontainer_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/edgecontainer/edgecontainernodepool.md">EdgeContainerNodePool</a></td>
-</tr>
-<tr>
-  <td><a href="/distributed-cloud/edge/latest/docs">{{edgecontainer_name}}</a></td>
-  <td><a href="/config-connector/docs/reference/resource-docs/edgecontainer/edgecontainervpnconnection.md">EdgeContainerVPNConnection</a></td>
-</tr>
 </tbody>
 </table>
 </devsite-filter>
 </div>
 
-The following resources are not supported in {{product_name_short}} starting from the corresponding version:
+The following resources are not supported in {{product_name_short}} starting
+from the corresponding version:
 
 <div>
 <table>

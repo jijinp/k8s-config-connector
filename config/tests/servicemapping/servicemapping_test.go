@@ -239,6 +239,11 @@ func TestTerraformFieldsAreInResourceSchema(t *testing.T) {
 				for _, c := range rc.Containers {
 					fields = append(fields, c.TFField)
 				}
+				if rc.ObservedFields != nil {
+					for _, o := range *rc.ObservedFields {
+						fields = append(fields, o)
+					}
+				}
 				// Check the fields to ensure they're in the schema
 				for _, f := range fields {
 					if f == "" {
@@ -1268,4 +1273,113 @@ func TestStorageVersionIsSetAndValidIFFV1alpha1ToV1beta1IsSet(t *testing.T) {
 			}
 		}
 	}
+}
+
+func TestObservedFields(t *testing.T) {
+	t.Parallel()
+	serviceMappings := testservicemappingloader.New(t).GetServiceMappings()
+	provider := tfprovider.NewOrLogFatal(tfprovider.UnitTestConfig())
+	for _, sm := range serviceMappings {
+		sm := sm
+		t.Run(sm.Name, func(t *testing.T) {
+			t.Parallel()
+			for _, rc := range sm.Spec.Resources {
+				tfResource := provider.ResourcesMap[rc.Name]
+				rc := rc
+				t.Run(rc.Kind, func(t *testing.T) {
+					t.Parallel()
+					if rc.ObservedFields == nil {
+						return
+					}
+					assertObservedFieldsSliceNotEmpty(t, rc)
+					assertNoDuplicatesInObservedFieldsSlice(t, rc)
+					// TODO(b/314840974): Remove after reference fields are supported as observed fields.
+					assertObservedFieldsNotReferences(t, rc)
+					// TODO(b/314841141): Remove after label fields are supported as observed fields.
+					assertObservedFieldsNotLabels(t, rc)
+					// TODO(b/314842047): Remove after name fields are supported as observed fields.
+					assertObservedFieldsNotName(t, rc)
+					// TODO(b/314841744): Remove after sensitive fields are supported as observed fields.
+					assertObservedFieldsNotSensitive(t, rc, tfResource)
+				})
+			}
+		})
+	}
+}
+
+func assertObservedFieldsSliceNotEmpty(t *testing.T, rc v1alpha1.ResourceConfig) {
+	t.Helper()
+	if rc.ObservedFields != nil && len(*rc.ObservedFields) == 0 {
+		t.Errorf("kind %v has an empty observed fields slice", rc.Kind)
+		return
+	}
+	return
+}
+
+func assertNoDuplicatesInObservedFieldsSlice(t *testing.T, rc v1alpha1.ResourceConfig) {
+	t.Helper()
+	if len(*rc.ObservedFields) == 0 {
+		t.Errorf("kind %v has no observed field", rc.Kind)
+		return
+	}
+	observedFieldMap := make(map[string]bool)
+	for _, field := range *rc.ObservedFields {
+		if _, ok := observedFieldMap[field]; ok {
+			t.Errorf("kind %v contains duplicated observed field %v", rc.Kind, field)
+			continue
+		}
+		observedFieldMap[field] = true
+	}
+	return
+}
+
+func assertObservedFieldsNotReferences(t *testing.T, rc v1alpha1.ResourceConfig) {
+	t.Helper()
+	referenceFields := make(map[string]bool)
+	for _, refConfig := range rc.ResourceReferences {
+		referenceFields[refConfig.TFField] = true
+	}
+	for _, field := range *rc.ObservedFields {
+		if _, ok := referenceFields[field]; ok {
+			t.Errorf("kind %v contains observed field %v: reference "+
+				"fields are not supported as observed fields", rc.Kind, field)
+		}
+	}
+}
+
+func assertObservedFieldsNotLabels(t *testing.T, rc v1alpha1.ResourceConfig) {
+	t.Helper()
+	for _, field := range *rc.ObservedFields {
+		if field != "" && field == rc.MetadataMapping.Labels {
+			t.Errorf("kind %v contains observed field %v: labels "+
+				"field is not supported as ab observed field", rc.Kind, field)
+		}
+	}
+}
+
+func assertObservedFieldsNotName(t *testing.T, rc v1alpha1.ResourceConfig) {
+	t.Helper()
+	for _, field := range *rc.ObservedFields {
+		if field != "" && (field == rc.MetadataMapping.Name ||
+			field == rc.ServerGeneratedIDField) {
+			t.Errorf("kind %v contains observed field %v: name "+
+				"field is not supported as an observed field", rc.Kind, field)
+		}
+	}
+}
+
+func assertObservedFieldsNotSensitive(t *testing.T, rc v1alpha1.ResourceConfig, tfResource *schema.Resource) {
+	t.Helper()
+	for _, field := range *rc.ObservedFields {
+		tfSchema, err := tfresource.GetTFSchemaForField(tfResource, field)
+		if err != nil {
+			t.Errorf("error getting Terraform schema for observed "+
+				"field %v in kind %v: %v", field, rc.Kind, err)
+		}
+		if tfresource.IsSensitiveField(tfSchema) {
+			t.Errorf("kind %v contains observed field %v: sensitive "+
+				"fields are not supported as observed fields", rc.Kind, field)
+		}
+	}
+
 }
